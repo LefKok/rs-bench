@@ -113,8 +113,8 @@ fn encode_decode_benchmark() {
             let throughput_encode = (size as f64) / avg_encode_duration / 1_073_741_824.0;
             let throughput_decode = (size as f64) / avg_decode_duration / 1_073_741_824.0;
 
-            println!("Average Encoding {} with {} original and {} recovery shards took: {:?}, throughput: {:.2} GiB/sec", label, num_original_shards, num_recovery_shards, avg_encode_duration, throughput_encode);
-            println!("Average Decoding {} with {} original and {} recovery shards took: {:?}, throughput: {:.2} GiB/sec", label, num_original_shards, num_recovery_shards, avg_decode_duration, throughput_decode);
+            println!("Average Encoding {} with {} original and {} recovery shards took: {:.4} sec, throughput: {:.2} GiB/sec", label, num_original_shards, num_recovery_shards, avg_encode_duration, throughput_encode);
+            println!("Average Decoding {} with {} original and {} recovery shards took: {:.4} sec, throughput: {:.2} GiB/sec", label, num_original_shards, num_recovery_shards, avg_decode_duration, throughput_decode);
         }
     }
 }
