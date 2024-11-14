@@ -98,14 +98,25 @@ fn encode_decode_benchmark() {
                 for (i, shard) in original.iter().enumerate().skip(num_recovery_shards) {
                     decoder.add_original_shard(i, shard).unwrap();
                 }
-                for (i, shard) in recovery.iter().enumerate() {
+                for (i, shard) in recovery.iter().enumerate().take(num_original_shards) {
                     decoder.add_recovery_shard(i, shard).unwrap();
                 }
 
                 let start_decode = Instant::now();
-                decoder.decode().unwrap();
+                let decoded = decoder.decode().unwrap();
                 let duration_decode = start_decode.elapsed();
                 total_decode_duration += duration_decode.as_secs_f64();
+
+                // Verify that the decoded data matches the original data
+                for (original_shard, (_, decoded_shard)) in
+                    original.iter().zip(decoded.restored_original_iter())
+                {
+                    assert_eq!(
+                        *original_shard,
+                        &decoded_shard[..],
+                        "Decoded data does not match original data"
+                    );
+                }
             }
 
             let avg_encode_duration = total_encode_duration / 3.0;
